@@ -1,10 +1,99 @@
+body {
+  background: url("../Images/bg_first_screen1.jpg") no-repeat;
+  background-size: 100%;
+}
+
 .App {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.cardBox {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 275px;
+  max-width: 35%;
+  margin: auto; 
+}
+
+.card-text {
+  color: #31a37c;
+  text-align: justify;
+}
+
+.card {
+  min-width: 100%;
+}
+
+.input-div {
+  margin: 5%;
+}
+.error-msg {
+  margin-block: 0;
+  text-align: left;
+  margin-left: 30px;
+  color: red;
+}
+
+#Xi, #Xi:focus, #Xi:active , #Yi, #Yi:focus, #Yi:active{
+  outline: none;
+  background-color: transparent;
+  border-radius: 2rem;
+  width: 80%;
+  margin-left: 10px;
+
+  /*input Box Design*/
+  padding: 15px 0 15px 30px;
+  border-color: white;
+  color: #31a37c;
+  font-weight: 500;
+  font-size: medium;
+  margin: 10px;
+}
+
+.text-field {
+  display: flex;
+  flex-direction: row;
+}
+
+.navigation-buttons {
+  display: flex;
+  flex-direction: row;
+  margin: 0% 5% 0% 5%;
+  position: absolute;
+  bottom: 5%;
+  width: 90%;
+}
+
+.inputScreen-Next {
+  justify-content: flex-end;
+}
+
+.optionScreen-Next {
+  justify-content: space-between;
+}
+
+.button {
+  font-weight: bold;
+  font-size: larger;
+}
+
+.options {
+  width: 100%;
+  margin: 5%;
+}
+
+.header {
+  color: #c3c746;
+}
+
+.hide {
+  display: hide;
+}
+
+.show {
+  display: block;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -35,4 +124,32 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.output_card {
+  padding: 20px 20px 50px 20px;
+  box-sizing: border-box;
+}
+
+.MuiDataGrid-columnHeaderDraggableContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.MuiToolbar-root, .MuiToolbar-root .MuiButtonBase-root {
+  color: yellow !important;
+}
+
+.MuiDataGrid-cell, 
+.MuiDataGrid-footerContainer, 
+.MuiDataGrid-columnHeaders {
+  border-color: green !important;
+}
+
+.MuiDataGrid-columnSeparator svg {
+  fill: green !important;
+}
+
+.MuiDataGrid-footerContainer {
+  border-top: none !important;
 }
