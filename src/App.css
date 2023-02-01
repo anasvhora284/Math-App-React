@@ -1,6 +1,6 @@
 body {
   background: url("../Images/bg_first_screen1.jpg") no-repeat;
-  background-size: 100%;
+  background-size: 100% 100%;
 }
 
 .App {
@@ -96,12 +96,6 @@ body {
   display: block;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -117,18 +111,34 @@ body {
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.output-div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  height: 94%;
+}
+
+.outputcard_width {
+  max-width: 70%;
 }
 
 .output_card {
   padding: 20px 20px 50px 20px;
   box-sizing: border-box;
+}
+
+.datagrid {
+  height: 85% !important;
+}
+
+.output_writings {
+  margin: auto;
+  width: 40%;
+}
+
+.output_writings p {
+  font-size: large;
+  font-weight: 600;
 }
 
 .MuiDataGrid-columnHeaderDraggableContainer {
@@ -152,4 +162,113 @@ body {
 
 .MuiDataGrid-footerContainer {
   border-top: none !important;
+}
+
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media only screen and (min-width: 1px) and (max-width: 425px) {
+  body {
+    background-size: auto 100%;
+  }
+
+  .cardBox {
+    max-width: 90% !important;
+    max-height: 200%;
+  }
+
+  .card {
+    height: 80% !important;
+    width: 90% !important;
+  }
+
+  .outputcard_width {
+    height: 200%  !important;
+  }
+
+  .output-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }  
+
+  .datagrid {
+    height: 100% !important;
+  }
+
+  .output_writings {
+    width: 100%;
+    margin: 15% auto;
+  }
+
+  .MuiDataGrid-main {
+    height: 55vh;
+  }
+}
+
+@media only screen and (min-width: 426px) and (max-width: 767px){
+  .cardBox {
+    max-width: 60% !important;
+  }
+
+  .card {
+    height: 85% !important;
+    width: 60% !important;
+  }
+
+  .outputcard_width {
+    max-width: 80%  !important;
+  }
+
+  .output_writings {
+    margin: auto auto;
+    width: 40%;
+  }
+
+  .output_writings h2 {
+    font-size: medium !important;
+    font-weight: 600 !important;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1024px){
+  .cardBox {
+    max-width: 50% !important;
+  }
+
+  .card {
+    height: 85% !important;
+    width: 90% !important;
+  }
+
+  .datagrid {
+    height: 100% !important;
+  }
+
+  .outputcard_width {
+    max-width: 70%  !important;
+  }
+
+  .output_writings {
+    margin: auto auto auto 20px;
+    max-width: 40% !important;
+  }
+
+  .output_writings p {
+    font-size: medium !important;
+    font-weight: 500 !important;
+  }
 }

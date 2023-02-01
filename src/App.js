@@ -10,7 +10,21 @@ import { DataGrid } from "@mui/x-data-grid";
 
 function App() {
   // For Output Screen
-  let CF = 0;
+  let 
+    sOfX = 0,
+    CF = 0,
+    sOfY = 0,
+    sOfX2 = 0,
+    sOfY2 = 0,
+    sOfXY = 0,
+    sOfXM2 = 0,
+    mean = 0,
+    median = 0,
+    mode = 0,
+    standard_D = 0,
+    coRelation_E = 0
+  ;
+
   let rows = [],columns =[];
   let idCounter = 0;
   const re = /^[0-9,]+$/;
@@ -19,27 +33,45 @@ function App() {
   const [errorY, setErrorY] = useState(false);
   const [arrOfX, setArrOfX] = useState([]);
   const [arrOfY, setArrOfY] = useState([]);
-  const [radiobtn, setRadiobtn] = useState("");
+  const [radiobtn, setRadiobtn] = useState('');
   const [valueOfX, setvalueOfX] = useState("");
   const [valueOfY, setvalueOfY] = useState("");
-  const [rowsData,setRowsData] = useState([]);
+  let [rowData, setRowsData] = useState([]);
 
   // eslint-disable-next-line no-unused-expressions
   const handleNext = () => {
     if (currentScreen === "inputScreen") {
       if (valueOfX.trim().length && valueOfY.trim().length) {
+        setRadiobtn("Mean")
         setCurrentScreen("optionScreen");
         input();
       }
       !valueOfX.trim().length ? setErrorX(true) : setErrorX(false);
       !valueOfY.trim().length ? setErrorY(true) : setErrorY(false);
     } else {
+      
+      let cf = 0;
+      const UpdatedRowData = arrOfX.map((xi, index) => {
+          return {
+            id: index + 1,
+            xi,
+            yi: arrOfY[index],
+            xi2: arrOfX[index] ** 2,
+            yi2: arrOfY[index] ** 2,
+            xiyi: arrOfX[index] * arrOfY[index],
+            cf: cf += arrOfY[index],
+            xm2: ((arrOfX[index] - mean) ** 2).toFixed(4),
+          }
+      })  
+
+      setRowsData(UpdatedRowData);
       setCurrentScreen("outputScreen");
     }
   };
 
   const handlePrevious = () => {
     if (currentScreen === "outputScreen") {
+      setRadiobtn(radiobtn);
       setCurrentScreen("optionScreen");
     } else {
       setCurrentScreen("inputScreen");
@@ -94,6 +126,22 @@ function App() {
     console.log(arrOfY);
   }, [arrOfX, arrOfY]);
 
+  
+  arrOfX.forEach((value, index) => {
+    sOfX += value;
+    sOfY += arrOfY[index];
+    sOfX2 += value * value;
+    sOfY2 += arrOfY[index] * arrOfY[index];
+    sOfXY += value * arrOfY[index];
+    sOfXM2 += (value - (sOfXY/sOfY)) ** 2;
+    CF += arrOfY[index]
+    mean = sOfXY/sOfY; 
+    median = calculate_Median();
+    mode = calculate_Mode();
+    standard_D = calculate_SD();
+    coRelation_E = calculate_CR();
+  });
+
   function input() {
     valueOfX.trim().length
       ? setArrOfX(valueOfX.replaceAll(" ", "").split(","))
@@ -103,25 +151,9 @@ function App() {
       : setErrorY(true);
   }
 
-  const rowData = (value) => {
-    idCounter+=1;
-    return {
-      id: idCounter,
-      xi: arrOfX[value],
-      yi: arrOfY[value],
-      xi2: arrOfX[value] ** 2,
-      yi2: arrOfY[value] ** 2,
-      xiyi: arrOfX[value] * arrOfY[value],
-    }
-  }
-
-  rows = [
-    rowData(0),
-    rowData(1),
-    rowData(2),
-    rowData(3),
-    rowData(4),
-  ];
+  // rows = [
+  //   rowData()
+  // ];
 
   switch (radiobtn) {
     case 'Mean':
@@ -243,7 +275,7 @@ function App() {
           filterable: false,
         },
         {
-          field: "xi-mean^2",
+          field: "xm2",
           headerName: "(Xi - Mean)²",
           flex: 1,
           description: "", 
@@ -312,10 +344,45 @@ function App() {
     break;
   }
 
+  function calculate_Median() {
+    let ans = sOfY / 2;
+    let sumY = 0;
+    for (let index = 0; index < arrOfX.length; index++) {
+      sumY += arrOfY[index];
+      if (sumY < ans) {
+        continue;
+      } else {
+        console.log(arrOfX[index]);
+        return (arrOfX[index]);
+      }
+    }
+  }
+
+  function calculate_Mode (params) {
+    let ans = Math.max(...arrOfY);
+    for (let index = 0; index < arrOfX.length; index++) {
+      if (arrOfY[index] === ans) {
+        return(arrOfX[index]);
+      } else {
+        continue;
+      }
+    }
+  };
+
+  function calculate_SD(params) {
+    return(sOfXM2 / (arrOfY.length - 1) ** 1/2);
+  }
+
+  function calculate_CR(params) {
+    return ((sOfXY - (sOfX * sOfY) / arrOfX.length) / 
+    (Math.sqrt(sOfX2 - (sOfX * sOfX) / arrOfX.length) * 
+    Math.sqrt(sOfY2 - (sOfY * sOfY) / arrOfX.length)))
+  }
+
 
   return (
     <div className="App">
-      <Box className="cardBox">
+      <Box className={`cardBox ${currentScreen === "outputScreen" ? 'outputcard_width' : '' }`}>
         <Card
           className={`card ${currentScreen === "outputScreen" ? 'output_card' : ''}`}
           sx={{
@@ -323,6 +390,7 @@ function App() {
             color: "#c3c746",
             borderRadius: "5%",
             height: "70%",
+            width: "70%",
             position: "relative",
           }}
         >
@@ -378,8 +446,9 @@ function App() {
             <div className="options">
               <RadioGroup
                 aria-labelledby="demo-radio-buttons-group-label"
-                defaultValue="Mean"
-                name="radio-buttons-group"
+                name="controlled-radio-buttons-group"
+                value={radiobtn}
+                onChange={handleRadio}
               >
                 <CommanRadiobtn handleRadio={handleRadio} value="Mean" />
                 <CommanRadiobtn handleRadio={handleRadio} value="Median" />
@@ -435,10 +504,11 @@ function App() {
             //     </TableBody>
             //   </Table>
             // </TableContainer>
-            <div style={{ height: "94.02%", width: "100%" }}>
+            <div className="output-div">
               <DataGrid
+                className="datagrid"
                 sx={{color: 'yellow', borderColor: 'green'}}
-                rows={rows}
+                rows={rowData}
                 columns={columns}
                 pageSize={5}
                 rowsPerPageOptions={[5]}
@@ -446,7 +516,51 @@ function App() {
                 disableColumnMenu
                 disableSelectionOnClick
               />
+              <div className="output_writings">
+                <p> The sum of Xi is: {sOfX}</p>
+                <p> The sum of Yi is: {sOfY}</p>
+                {radiobtn === 'CoRelation CoEfficient' && 
+                  <p> The sum of Xi² is: {sOfX2}</p>
+                }
+
+                {radiobtn === 'CoRelation CoEfficient' && 
+                  <p> The sum of Yi² is: {sOfY2}</p>
+                }
+
+                {(radiobtn !== 'Median' && radiobtn !== 'Mode') && 
+                  <p> The sum of Xi*Yi is: {sOfXY}</p>
+                }
+
+                {radiobtn === 'Standard Deviation' && 
+                  <p> The sum of (Xi - Mean)² is: {sOfXM2.toFixed(4)}</p>
+                }
+
+                {radiobtn === 'Median' && 
+                  <p> The sum of Yi or N: {CF}</p>
+                }
+
+                {radiobtn === 'Mean' && 
+                  <p> The Mean of the data is : {mean.toFixed(4)}</p>
+                }
+
+                {radiobtn === 'Median' && 
+                  <p> The Median of the data is : {median}</p>
+                }
+
+                {radiobtn === 'Mode' && 
+                  <p> The Mode of the data is : {mode}</p>
+                }
+
+                {radiobtn === 'Standard Deviation' && 
+                  <p> The Standard Deviation of the data is : {standard_D.toFixed(4)}</p>
+                }
+
+                {radiobtn === 'CoRelation CoEfficient' && 
+                  <p> The CoRelation CoEfficient of the data is : {coRelation_E.toFixed(4)}</p>
+                }
+              </div>
             </div>
+            
           )}
 
           <div className={getParentBtnClassName()}>
