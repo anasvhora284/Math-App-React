@@ -400,9 +400,9 @@ function App() {
             <div className="input-div">
               <h2 className="card-title">Hello there!</h2>
               <p className="card-text">
-                This website is designd to make your calculations faster! Here
-                you can Calculate Mean, Median, Mod, CoRelation CoEfficient &
-                many more.
+                This website is designed to make your calculations faster! Here
+                you can Calculate Mean, Median, Mode, Corelation Corfficient &
+                many more coming soon!.
                 <br />
                 <br />
                 Pleae Enter the data of X and Y in Below Field. <br />
@@ -507,14 +507,18 @@ function App() {
             <div className="output-div">
               <DataGrid
                 className="datagrid"
-                sx={{color: 'yellow', borderColor: 'green'}}
+                sx={{
+                  color: 'yellow', 
+                  borderColor: 'green',
+                }}
                 rows={rowData}
                 columns={columns}
                 pageSize={5}
                 rowsPerPageOptions={[5]}
                 getRowId={(row) => row.id}
                 disableColumnMenu
-                disableSelectionOnClick
+                disableSelectionOnClick 
+                hideFooter = {arrOfX.length <= 5 ? true : false}
               />
               <div className="output_writings">
                 <p> The sum of Xi is: {sOfX}</p>
