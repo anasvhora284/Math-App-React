@@ -406,6 +406,7 @@ function App() {
                 <br />
                 <br />
                 Pleae Enter the data of X and Y in Below Field. <br />
+                <b>For Continuous data Enter The value of Mi in place of Xi. <br /> </b>
                 I.E:- X: 1, 2, 3, 4 & Y: 5, 6, 7, 8
               </p>
               <div className="text-field-group">
